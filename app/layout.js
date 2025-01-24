@@ -1,7 +1,11 @@
 import Link from "next/link";
 import "./globals.css";
+import { LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
     return (
         <html lang="en">
             <body>
@@ -15,25 +19,31 @@ export default function RootLayout({ children }) {
                                 </Link>
                             </li>
                             <li>|</li>
-                            <li>
-                                <Link
-                                    href="/profile"
-                                    className="hover:underline"
-                                >
-                                    profile
-                                </Link>
-                            </li>
-                            <li>|</li>
-                            <li>
-                                <Link href="/login" className="hover:underline">
-                                    Login
-                                </Link>
-                            </li>
+
+                            {user ? (
+                                <>
+                                    <li>
+                                        <Link
+                                            href="/profile"
+                                            className="hover:underline"
+                                        >
+                                            profile
+                                        </Link>
+                                    </li>
+                                    <li>|</li>
+                                    <li>
+                                        <LogoutLink>Logout</LogoutLink>
+                                    </li>
+                                </>
+                            ) : (
+                                <li>
+                                    <LoginLink>Log In</LoginLink>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                 </header>
-
-                {children}
+                <main className="main">{children}</main>
 
                 {/* Footer */}
                 <footer className="bg-gray-800 text-white p-4 text-center">
