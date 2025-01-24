@@ -6,6 +6,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 export default async function RootLayout({ children }) {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+
     return (
         <html lang="en">
             <body>
@@ -32,12 +33,16 @@ export default async function RootLayout({ children }) {
                                     </li>
                                     <li>|</li>
                                     <li>
-                                        <LogoutLink>Logout</LogoutLink>
+                                        <LogoutLink className="hover:underline">
+                                            Logout
+                                        </LogoutLink>
                                     </li>
                                 </>
                             ) : (
                                 <li>
-                                    <LoginLink>Log In</LoginLink>
+                                    <LoginLink className="hover:underline">
+                                        Log In
+                                    </LoginLink>
                                 </li>
                             )}
                         </ul>
